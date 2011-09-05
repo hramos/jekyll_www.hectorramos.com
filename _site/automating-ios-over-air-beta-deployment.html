@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Automating iOS Over The Air Beta Deployment</title>
+   <meta name="author" content="H&eacute;ctor Ramos" />
+   <link href="http://feeds.feedburner.com/HectorRamos" rel="alternate" title="H&eacute;ctor Ramos" type="application/atom+xml" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+	<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  FB.init({
+    appId  : '2265403463',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true  // parse XFBML
+  });
+</script>
+</head>
+<body class="site">
+	<header class="title">
+		<hgroup>
+    		<a class="sitename" href="/">H&eacute;ctor Ramos</a>
+		</hgroup>
+		<nav>
+    		<a class="extra" href="/">home</a>
+			<a class="extra" href="http://hectorramos.com/about" title="bits">about</a>
+			<a class="extra" href="http://hectorramos.com/apps" title="apps">apps</a>
+			<a class="extra" href="http://hectorramos.com/archives" title="bits">archives</a>
+			<a class="extra" href="http://hectorramos.com/bits" title="bits">bits</a>
+			<a class="extra" href="http://hectorramos.com/search" title="bits">search</a>
+		</nav>
+  </header>
+  
+  <section id="home">
+	<ul class="posts post_listing">
+    <article> 
+	<header> 
+		<h2>Automating iOS Over The Air Beta Deployment</h2>
+	    <span><time datetime="2011-01-11 00:00:00 -0400">11 Jan 2011</time></span>
+		  <small><a href="http://hectorramos.com/automating-ios-over-air-beta-deployment" title="Automating iOS Over The Air Beta Deployment">#</a></small>
+	</header> 
+	<p>A nifty feature introduced in iOS 4.0 was Over The Air binary deployments. You can use these to distribute your Ad Hoc beta app without having your users deal with iTunes and mobile provisioning profiles. It&#8217;s a great time saver and much friendlier to use than the previous tethered method.</p>
+
+<p>Creating these OTA deployments used to be very tedious. I&#8217;ve been learning Rails this past week, and really liked the way Heroku allows you to git push to their servers to deploy. Last night, I wrote up some scripts to simulate this as close as possible. I&#8217;ll first go through the basics of OTA deployments, the meaty automation action is at the last section.</p>
+
+<!--more-->
+
+
+<h2>Over The Air Deployment Basics</h2>
+
+<p>Feel free to skip this section if you&#8217;ve been doing OTA deployments already. Automation details are further down the page.</p>
+
+<p>The way this works is through the use of a manifest file and a specially formatted iTunes URL. An example manifest is as follows:</p>
+
+<script src="https://gist.github.com/774468.js?file=manifest.plist"></script>
+
+
+<p>This is a standard ASCII plist &#8212; you may use the OS X Property List Editor, or launch your favorite text editor and copy/paste this into a new file. Change the ${###} values to whatever matches your application; use your own Info.plist as a guide for the bundle id, display name and version number, and choose a URL that matches the final public URL where your app will be available to beta testers. For example, you might own the http://google.com domain, so you&#8217;d decide to host future betas of the Google +1 iOS apps at http://beta.google.com/plusone/GooglePlusOne.ipa. This must be a directory that is open to the Internet, as your iOS device must be able to download the IPA file.</p>
+
+<p>The manifest and IPA files are linked to from any web page of your own choosing. Just use the following URL format when doing so:</p>
+
+<script src="https://gist.github.com/774499.js?file=_manifest-link.html"></script>
+
+
+<p>Here&#8217;s a full HTML file that you may use if you don&#8217;t have a mobile formatted web page just yet:</p>
+
+<script src="https://gist.github.com/774481.js?file=index.html"></script>
+
+
+<p>Just replace the Google +1 dummy data with your own.</p>
+
+<p>Notice the beta_archive.zip link? That&#8217;s what we serve to Pre-iOS 4.0 users, since OTA is a 4.0 feature. This is a zip containing the IPA and mobile provision necessary for classic iTunes tethered installs.</p>
+
+<p>Once you&#8217;ve done all of this, you don&#8217;t need to recreate these files unless the application version number, bundle id or display name change (they must match the values in your Info.plist file).</p>
+
+<h3>But Wait&#8230; How Do I Create an IPA?</h3>
+
+<p>Build and Archive an ad hoc distribution target. Won&#8217;t go into details, just make sure to use a development Ad Hoc distribution provisioning profile. I recommend creating a new Target just for these Ad Hoc deployments. This way you don&#8217;t have to change the Code Signing settings every time, plus it will allow you to run this build from the command line &#8212; the end goal is to automate this process, remember?</p>
+
+<p>Here&#8217;s a screen cap from one of my apps:</p>
+
+<p><img src="http://c0185824.cdn1.cloudfiles.rackspacecloud.com/2011-01-code_signing.png" alt="Code Signing" /></p>
+
+<p>No code signing entitlements, just a distribution provisioning profile that was created for Ad Hoc deployments in Apple&#8217;s iOS Provisioning Portal.</p>
+
+<p>Once that&#8217;s set, just make sure your Ad Hoc target is active and then select Device (as opposed to Simulator) from your Xcode drop down:</p>
+
+<p><img src="http://c0185824.cdn1.cloudfiles.rackspacecloud.com/2011-01-device.png" alt="Xcode Dropdown Device" /></p>
+
+<p>Go to Build and select Build and Archive (if it&#8217;s gray, go back to the previous step and SELECT DEVICE, not Simulator):</p>
+
+<p><img src="http://c0185824.cdn1.cloudfiles.rackspacecloud.com/2011-01-build.png" alt="Build" /></p>
+
+<p><img src="http://c0185824.cdn1.cloudfiles.rackspacecloud.com/2011-01-comlink.png" alt="COM:LINK" /></p>
+
+<p>After a couple of minutes, the Xcode Organizer will pop up. Search for your application under Archived Applications, and then select the latest archive. Feel free to assign it a name that is useful to you &#8212; in my case, I use the same git tag that was applied to this code before being pushed. Once that&#8217;s out of the way, select your archive and then click on Share. Select the same Ad Hoc provisioning profile that you used during the build, then save it to disk. This will generate the IPA file that you need for OTA.</p>
+
+<h2>Do I Really Need To Do All Of This Myself?</h2>
+
+<p>Well, yes, you need to Build and Archive, but you can then use <a href="http://www.hanchorllc.com/2010/08/24/introducing-ios-beta-builder/">iOS Beta Builder</a> to create the manifest and HTML files necessary for OTA deployment. Yes, this is what I used to generate the above files. I could have told you initially, but then we wouldn&#8217;t learn anything new, would we? iOS Beta Builder is what I&#8217;ve been using for OTA deployments since last summer, and it works very well. It will generate all your files, after which you can just zip them up, upload to your website and extract them to their final location.</p>
+
+<h3>Enter Testflight</h3></h3>
+
+<p>Another option, which I highly recommend, is to use <a href="http://testflightapp.com">Testflight</a>. These guys have been working hard for months on creating the most painless way to distribute your beta deployments over the air. All you need to do is supply the IPA file, select your team members (use their email addresses) and they will receive a nice, mobile formatted email with the link to your IPA file. The link opens Safari, from where they can click on Install and &#8212; well, that&#8217;s it! The app is now installed.</p>
+
+<p><img src="http://c0185824.cdn1.cloudfiles.rackspacecloud.com/2011-01-testflightapp.png" alt="Testflight" /></p>
+
+<p>Testflight has other nifty features. You may manage multiple teams within each of your application. Say, you have one or two other developers and designers working on your app, you may choose to send them all of the daily builds. You may have another team for the client and just send them the end of week progress builds. And the most important feature, whenever you add a new team member, they get an email where with one or two clicks they can get their UDID registered with Testflight, saving you the need to explain them how to extract it themselves. Testflight also provides a way to batch download all the UDIDs which you can then upload to Apple&#8217;s iOS Provisioning Portal and add to your Ad Hoc distribution profile.</p>
+
+<p>Testflight really requires its own standalone review to do it justice. They are in closed beta at the moment (although they opened up their sign up during the holidays!). Wait for them to go public, contact them, or follow them on Twitter to snag your signup next time they open up again. Oh, and being invited to a Testflight team also gives you your own account, so that also works.</p>
+
+<p>Another point goes to Testflight for providing an <a href="http://testflightapp.com/api/doc/">upload API</a>, which is really useful for &#8212; you guessed it &#8212; over the air deployment automation.</p>
+
+<h2>Alright! Just Tell Me How To Automate All Of This Crap</h2>
+
+<p>Well, you need to do two things: automate your Xcode build, and then automate the IPA upload to your web server.</p>
+
+<p>The first part is taken care of by the following script:</p>
+
+<script src="https://gist.github.com/774017.js?file=buildandarchive.sh"></script>
+
+
+<p>Change all the variables to match your own development environment. The end result, if successful, is the IPA file you need and love.</p>
+
+<p>You may now create a simple script that scp&#8217;s the IPA to its final location in your web server, alongside the manifest.plist and index.html previously created with iOS Beta Builder. You should be able to do this easily, if not, then Google&#8217;s your best friend.</p>
+
+<p>However, thanks to Testflight, you can just call this script once the Xcode build has been successful. It will <a href="http://testflightapp.com/api/doc/">upload the IPA to Testflight</a> and automatically email your team members.</p>
+
+<script src="https://gist.github.com/773985.js?file=upload-testflight.sh"></script>
+
+
+<p>The team token determines which of your teams, within your Testflight configured apps, receives this deployment.</p>
+
+<p>Since you&#8217;re an awesome code monkey, it shouldn&#8217;t be too hard to link these two scripts together so that the Archive name and comments are kept consistent with the Testflight notes.</p>
+
+<p>My current deployment set up is an alias that first calls <code>git push</code>, and if successful, calls the build and archive script, which then in turn calls the Testflight deployment script.</p>
+
+<p>Try it out, and let me know if this works out for you.</p>
+
+	<footer> <!-- blog post footer -->
+	<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://hectorramos.com/automating-ios-over-air-beta-deployment" show_faces="true" width="450"></fb:like>
+	<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://hectorramos.com/automating-ios-over-air-beta-deployment" data-text="Automating iOS Over The Air Beta Deployment" data-count="horizontal" data-via="hectorramos">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+	<!-- Place this tag where you want the +1 button to render -->
+	<g:plusone size="medium"></g:plusone>
+	<div id="related">
+  		<h2>Related Posts</h2>
+  		<ul class="posts">
+		
+      		<li><span>01 Jul 2011</span> &raquo; <a href="/netflix-instant-watch-works-in-puerto-rico">Netflix Streaming works in Puerto Rico</a></li>
+    	
+      		<li><span>24 May 2011</span> &raquo; <a href="/objectify">Objectify. Give JSON, Receive Code.</a></li>
+    	
+      		<li><span>21 May 2011</span> &raquo; <a href="/may-update">May Update</a></li>
+    	
+  		</ul>
+	</div>
+	<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'hramos'; // required: replace example with your forum shortname
+
+    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+    // var disqus_identifier = 'unique_dynamic_id_1234';
+    //var disqus_url = 'http://example.com/permalink-to-page.html';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>
+
+<!-- Place this tag in your head or just before your close body tag -->
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+
+
+
+
+</article>
+
+	</ul>
+</section>
+
+
+  <footer class="footer">
+	<section class="contact">
+		<p>
+        	H&eacute;ctor Ramos<br />
+        	iOS engineer at <a href="http://polsense.com/">Polsense</a>
+			<address>hi@hectorramos.com</address>
+		</p>
+    </section>
+    <section class="contact">
+		<p>
+        	<a href="http://github.com/hramos/">github.com/hramos</a><br />
+        	<a href="http://twitter.com/hectorramos/">twitter.com/hectorramos</a><br />
+        	<a href="http://gowalla.com/hramos/">gowalla.com/hramos</a><br />
+    		<a href="http://flickr.com/photos/hramos/">flickr.com/photos/hramos</a>
+		</p>
+    </section>
+    <section class="rss">
+		<a href="http://feeds.feedburner.com/HectorRamos" title="Subscribe to my feed" rel="alternate" type="application/rss+xml">
+			<img src="images/feed-icon-64x64.png" alt="Subscribe to RSS Feed" />
+		</a>
+	</section>
+</footer>
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-9033644-1");
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>

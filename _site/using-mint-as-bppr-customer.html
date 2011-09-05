@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Using Mint as a BPPR customer</title>
+   <meta name="author" content="H&eacute;ctor Ramos" />
+   <link href="http://feeds.feedburner.com/HectorRamos" rel="alternate" title="H&eacute;ctor Ramos" type="application/atom+xml" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+	<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  FB.init({
+    appId  : '2265403463',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true  // parse XFBML
+  });
+</script>
+</head>
+<body class="site">
+	<header class="title">
+		<hgroup>
+    		<a class="sitename" href="/">H&eacute;ctor Ramos</a>
+		</hgroup>
+		<nav>
+    		<a class="extra" href="/">home</a>
+			<a class="extra" href="http://hectorramos.com/about" title="bits">about</a>
+			<a class="extra" href="http://hectorramos.com/apps" title="apps">apps</a>
+			<a class="extra" href="http://hectorramos.com/archives" title="bits">archives</a>
+			<a class="extra" href="http://hectorramos.com/bits" title="bits">bits</a>
+			<a class="extra" href="http://hectorramos.com/search" title="bits">search</a>
+		</nav>
+  </header>
+  
+  <section id="home">
+	<ul class="posts post_listing">
+    <article> 
+	<header> 
+		<h2>Using Mint as a BPPR customer</h2>
+	    <span><time datetime="2010-03-03 00:00:00 -0400">03 Mar 2010</time></span>
+		  <small><a href="http://hectorramos.com/using-mint-as-bppr-customer" title="Using Mint as a BPPR customer">#</a></small>
+	</header> 
+	<p><span class="full-image-block ssNonEditable"><span>&nbsp;</span></span></p><br/><p style="text-align: center;"><img src="http://c185824.r24.cf1.rackcdn.com/Screen shot 2010-03-03 at 2.20.28 PM.png?__SQUARESPACE_CACHEVERSION=1267640487019" alt="" /></p><br/><p>For almost two years, we&#8217;ve been trying to get <a href="http://www.mint.com">Mint</a> to work with <a href="http://www.popular.com">Banco Popular de Puerto Rico</a>&#8217;s accounts. It all began with the migration to the current 3rd generation BPPR version.</p><br/><p>Some background, first. Mint is a personal finance manager that launched at <a href="http://www.techcrunch.com/2007/09/18/mint-wins-techcrunch40-50000-award/">TechCrunch40 in 2008</a>. It helps you keep track of your transactions, set up budgets and receive alerts on your mobile device. It is an excellent tool for budget management, so much in fact that <a href="http://techcrunch.com/2009/09/14/the-value-of-techcrunch50-mint-acquired-by-intuit-for-170m-two-years-after-winning-tc40/">Intuit bought it up for $140 million last fall</a>.</p><br/><p>To work with your transactions, Mint needs access to your online banking website.&nbsp;Mint employs the services of <a href="http://www.yodlee.com">Yodlee</a> to aggregate all of your accounts. What Yodlee does is abstract the process of scraping your online banking website, providing a single API for Mint and <a href="http://www.blippy.com">other customers</a>. Yodlee has a database of the most popular online banking sites, their URLs, and their login process.</p><br/><p><span class="full-image-float-left ssNonEditable"><span><img src="http://c185824.r24.cf1.rackcdn.com/Screen%20shot%202010-03-03%20at%202.37.04%20PM.png?__SQUARESPACE_CACHEVERSION=1267641600141" alt="" /></span></span></p><br/><p>So the problem seems to have appeared when BPPR started using multitiered authentication. A weird&nbsp;occurrence, since&nbsp;Yodlee and PassMark (now RSA, providers of multitier authentication to many banks) have a &#8216;<a href="http://www.highbeam.com/doc/1G1-128053528.html">strategic alliance</a>&#8217; which should help them deal with these types of logins. It was not showing all of the security questions available to BPPR customers. It seemed to be in part due to BPPR&#8217;s use of both English and Spanish security questions. I won&#8217;t go into any more detail - what I am discussing is pretty obvious for the savvy user, but I get a feeling that most executives would not like it if I went into a detailed account of how the authentication system works.</p><br/><p><span class="thumbnail-image-block ssNonEditable"><span><a href="javascript:showFullImage('/display/ShowImage?imageUrl=%2Fstorage%2Fpost-images%2FScreen%20shot%202010-03-03%20at%202.23.01%20PM.png%3F__SQUARESPACE_CACHEVERSION%3D1267640682268',341,553);"></a></span></span></p><br/><p style="text-align: center;"><img class="full-image-inline ssNonEditable" src="http://c185824.r24.cf1.rackcdn.com/3835484-5992265-thumbnail.jpg?__SQUARESPACE_CACHEVERSION=1267640685179" alt="" /></p><br/><p>After some back and forth with Mint and later Yodlee, it seems like it is finally working. Please note that I am speaking from my personal point of view, and you should wait for any official statement from BPPR. In the meantime, I will share various tips that might help you link your BPPR account with Mint.</p><br/><ul><br/><li>When adding your account, please make sure to select &#8220;Popular (PR)&#8221; as your bank.&nbsp;</li><br/></ul><br/><ul><br/><li>You must have had set up your security questions in Spanish. The way BPPR works, it will always ask your question in your initial preferred language. Even though you can switch languages for the website on the fly, this does not apply to the security questions at the moment. I expect this to be changed soon to fully support Mint, but don&#8217;t quote me on that.&nbsp;</li><br/></ul><br/><ul><br/><li>Why Spanish? Because Yodlee still has an incomplete set of questions available, and it seems like the only valid set of questions that will match in both Mint and BPPR are in Spanish. The questions that worked for me were:</li><br/></ul><br/><ol><br/><li>&iquest;Como se llamaba tu primera mascota?</li><br/><li>&iquest;Cual era el nombre de tu escuela superior?</li><br/><li>&iquest;Cual es el nombre de tu abuelo por parte de padre?</li><br/></ol><br/><ul><br/><li>Some users report that using the same answer for all security questions helped them. It should still work with different answers to each question, but perhaps this can also help if your questions were set up in English initially. Your mileage may vary.</li><br/></ul><br/><p style="text-align: center;"><img src="http://c185824.r24.cf1.rackcdn.com/3835484-5992289-thumbnail.jpg?__SQUARESPACE_CACHEVERSION=1267640723081" alt="" /></p><br/><p>That&#8217;s it. Please discuss which methods worked and which didn&#8217;t, as we collect all these tips and get nearer to having Mint available for everybody.</p><br/><p>Note: Blippy.com doesn&#8217;t work as of this writing, even though I think they use Yodlee, too.</p>
+	<footer> <!-- blog post footer -->
+	<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://hectorramos.com/using-mint-as-bppr-customer" show_faces="true" width="450"></fb:like>
+	<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://hectorramos.com/using-mint-as-bppr-customer" data-text="Using Mint as a BPPR customer" data-count="horizontal" data-via="hectorramos">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+	<!-- Place this tag where you want the +1 button to render -->
+	<g:plusone size="medium"></g:plusone>
+	<div id="related">
+  		<h2>Related Posts</h2>
+  		<ul class="posts">
+		
+      		<li><span>01 Jul 2011</span> &raquo; <a href="/netflix-instant-watch-works-in-puerto-rico">Netflix Streaming works in Puerto Rico</a></li>
+    	
+      		<li><span>24 May 2011</span> &raquo; <a href="/objectify">Objectify. Give JSON, Receive Code.</a></li>
+    	
+      		<li><span>21 May 2011</span> &raquo; <a href="/may-update">May Update</a></li>
+    	
+  		</ul>
+	</div>
+	<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'hramos'; // required: replace example with your forum shortname
+
+    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+    // var disqus_identifier = 'unique_dynamic_id_1234';
+    //var disqus_url = 'http://example.com/permalink-to-page.html';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>
+
+<!-- Place this tag in your head or just before your close body tag -->
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+
+
+
+
+</article>
+
+	</ul>
+</section>
+
+
+  <footer class="footer">
+	<section class="contact">
+		<p>
+        	H&eacute;ctor Ramos<br />
+        	iOS engineer at <a href="http://polsense.com/">Polsense</a>
+			<address>hi@hectorramos.com</address>
+		</p>
+    </section>
+    <section class="contact">
+		<p>
+        	<a href="http://github.com/hramos/">github.com/hramos</a><br />
+        	<a href="http://twitter.com/hectorramos/">twitter.com/hectorramos</a><br />
+        	<a href="http://gowalla.com/hramos/">gowalla.com/hramos</a><br />
+    		<a href="http://flickr.com/photos/hramos/">flickr.com/photos/hramos</a>
+		</p>
+    </section>
+    <section class="rss">
+		<a href="http://feeds.feedburner.com/HectorRamos" title="Subscribe to my feed" rel="alternate" type="application/rss+xml">
+			<img src="images/feed-icon-64x64.png" alt="Subscribe to RSS Feed" />
+		</a>
+	</section>
+</footer>
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-9033644-1");
+pageTracker._trackPageview();
+</script>
+
+</body>
+</html>
