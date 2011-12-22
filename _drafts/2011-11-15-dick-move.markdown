@@ -1,8 +1,0 @@
---- 
-name: dick-move
-layout: post
-title: Don't be a dick to your users
-time: 2011-11-15 10:30:00 -04:00
----
-
-Gustazos!
