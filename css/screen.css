@@ -17,7 +17,7 @@ html, body {
 
 body { 
   background-color: #626262;
-  background: url("/images/micro_carbon.gif");
+  background: url("http://c185824.r24.cf1.rackcdn.com/micro_carbon.gif");
   font: 13.34px helvetica neue, helvetica, arial, clean, sans-serif;
   *font-size: small;
   text-align: center;
@@ -85,7 +85,7 @@ table {
 /*****************************************************************************/
 #home {
 	background-color: #efefef;
-	background: url("/images/exclusive_paper.gif");
+	background: url("http://c185824.r24.cf1.rackcdn.com/exclusive_paper.gif");
 	padding: 32px 32px 32px 32px;
 }
 ul.posts {

@@ -10,7 +10,7 @@ includes:    ./_includes
 
 pygments:    true
 markdown:    rdiscount
-permalink:   /:title.html
+permalink:   /:title
 
 base_url: http://hectorramos.com
 #base_url: http://jekyll.dev

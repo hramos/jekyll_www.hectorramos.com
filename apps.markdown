@@ -3,6 +3,12 @@ layout: informational
 title: Apps
 ---
 
+## IVU Loto ##
+
+{% include app_ivu_loto.html %}
+
+---
+
 ## Buzzes ##
 
 {% include app_buzzes.html %}
